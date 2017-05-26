@@ -1,0 +1,14 @@
+UbloxGPS	KEYWORD1
+initialize	KEYWORD2
+setAirborne	KEYWORD2
+getLat	KEYWORD2
+getLon	KEYWORD2
+getAlt	KEYWORD2
+getHour	KEYWORD2
+getMinute	KEYWORD2
+getSecond	KEYWORD2
+getDay	KEYWORD2
+getMonth	KEYWORD2
+getYear	KEYWORD2
+getSats	KEYWORD2
+getFixAge	KEYWORD2
