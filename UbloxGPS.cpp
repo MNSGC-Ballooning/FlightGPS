@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include "Ublox.h"
+#include "UbloxGPS.h"
 
-UbloxGPS::UbloxGPS(Stream* port) {
-	this.port = port;
+UbloxGPS::UbloxGPS(HardwareSerial* port) {
+	this->port = port;
 }
 
 void UbloxGPS::initialize() {
@@ -11,22 +11,22 @@ void UbloxGPS::initialize() {
 }
 
 void UbloxGPS::setAirborne() {
-	byte[] message = [0xB5,0x62,0x06,0x24,0x24,0x00,0x00,0x05,0x06,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+	byte message[] = {0xB5,0x62,0x06,0x24,0x24,0x00,0x00,0x05,0x06,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0,0];
-	byte[36] buffer;
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0,0};
+	byte buffer[36];
 	for (int i = 0; i < 36; i++) {
 		buffer[i] = message[i+5];
 	}
 	unsigned short checksum = findChecksum(buffer);
 	message[42] = byte((checksum / 0x100));
 	message[43] = byte((checksum % 0x100));
-	port->print(message);
+	port->write(message, sizeof(message)/sizeof(message[0]));
 }
 
-unsigned short UbloxGPS::findChecksum(byte[] buffer); {
+unsigned short UbloxGPS::findChecksum(byte buffer[]) {
 	byte ckA=0, ckB=0;
-	for (int i = 0; i<sizeOf(buffer)/sizeOf(buffer[0]); i++) {
+	for (int i = 0; i<sizeof(buffer)/sizeof(buffer[0]); i++) {
 		ckA = ckA + buffer[i];
 		ckB = ckB + ckA;
 	}
@@ -47,10 +47,10 @@ float UbloxGPS::getLat() {return lat;}
 float UbloxGPS::getLon() {return lon;}
 float UbloxGPS::getAlt() {return alt;}
 byte UbloxGPS::getHour() {return hour;}
-byte UbloxGPS::getMinute() {return minute}
-byte UbloxGPS::getSecond() {return second}
+byte UbloxGPS::getMinute() {return minute;}
+byte UbloxGPS::getSecond() {return second;}
 byte UbloxGPS::getDay() {return day;}
 byte UbloxGPS::getMonth() {return month;}
 byte UbloxGPS::getYear() {return year;}
-byte UbloxGPS::getSats() {return sats}
-unsigned long UbloxGPS::getFixAge() {return fixAge}
+byte UbloxGPS::getSats() {return sats;}
+unsigned long UbloxGPS::getFixAge() {return fixAge;}

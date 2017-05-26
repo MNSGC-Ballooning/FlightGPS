@@ -7,7 +7,7 @@
 
 class UbloxGPS {
 	public:
-		UbloxGPS(Stream* port);
+		UbloxGPS(HardwareSerial* port);
 		void initialize();
 		void setAirborne();
 		void read();
@@ -24,14 +24,14 @@ class UbloxGPS {
 		unsigned long getFixAge();
 	private:
 		TinyGPS parser;
-		Stream* port;
+		HardwareSerial* port;
 		float lat, lon, alt;
 		byte day, month, hour, minute, second, hundreths;
-		unsigned int year;
+		int year;
 		unsigned long fixAge;
 		byte sats;
-		unsigned short findChecksum(char[] buffer);
-}
+		unsigned short findChecksum(byte buffer[]);
+};
 
 #endif
 
