@@ -2,11 +2,18 @@
 #include "UbloxGPS.h"
 
 UbloxGPS::UbloxGPS(HardwareSerial* port) {
-	this->port = port;
+	hardPort = port;
+	usingSoftSerial = false;
+}
+
+UbloxGPS::UbloxGPS(SoftwareSerial* port) {
+	softPort = port;
+	usingSoftSerial = true;
 }
 
 void UbloxGPS::initialize() {
-	port->begin(9600);
+	if (usingSoftSerial) softPort->begin(9600);
+	else hardPort->begin(9600);
 	setAirborne();
 }
 
@@ -21,7 +28,8 @@ void UbloxGPS::setAirborne() {
 	unsigned short checksum = findChecksum(buffer);
 	message[42] = byte((checksum / 0x100));
 	message[43] = byte((checksum % 0x100));
-	port->write(message, sizeof(message)/sizeof(message[0]));
+	if (usingSoftSerial) softPort->write(message, sizeof(message)/sizeof(message[0]));
+	else hardPort->write(message, sizeof(message)/sizeof(message[0]));
 }
 
 unsigned short UbloxGPS::findChecksum(byte buffer[]) {
@@ -34,13 +42,23 @@ unsigned short UbloxGPS::findChecksum(byte buffer[]) {
 }
 
 void UbloxGPS::read() {
-	while (port->available() > 0) {
-		if(parser.encode(port->read())) {
-			parser.f_get_position(&lat, &lon, &fixAge);
-			alt = parser.f_altitude();
-			parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
-		}
+	bool newData;
+	char c;
+	while (isAvailable()) {
+		if (usingSoftSerial) c = softPort->read();
+		else c = hardPort->read();
+		if(parser.encode(c)) newData = true;
 	}
+	if (newData) {
+		parser.f_get_position(&lat, &lon, &fixAge);
+		alt = parser.f_altitude();
+		parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
+	}
+}
+
+bool UbloxGPS::isAvailable() {
+	if (usingSoftSerial) return (softPort->available() > 0);
+	else return (hardPort->available() > 0);
 }
 
 float UbloxGPS::getLat() {return lat;}
