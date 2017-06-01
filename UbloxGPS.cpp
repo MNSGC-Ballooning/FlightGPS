@@ -18,26 +18,21 @@ void UbloxGPS::initialize() {
 }
 
 String UbloxGPS::setAirborne() {
-	byte message[] = {0xB5,0x62,0x06,0x24,0x24,0x00,0x00,0x05,0x06,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+	byte airMode[] = {0xB5,0x62,0x06,0x24,0x24,0x00,0x00,0x05,0x06,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0,0};
-	byte buffer[40];
-	for (int i = 0; i < 40; i++) {
-		buffer[i] = message[i+2];
-	}
-	unsigned short checksum = findChecksum(buffer);
-	message[42] = byte((checksum / 0x100));
-	message[43] = byte((checksum % 0x100));
+	byte length = 44;
+	addChecksum(airMode, length);
 	String response = "";
 	if (usingSoftSerial) {
-		softPort->write(message, sizeof(message)/sizeof(message[0]));
+		softPort->write(airMode, length);
 		delay(10);
 		while (softPort->available() > 0) {
 			response += softPort->read();
 		}
 	}
 	else {
-		hardPort->write(message, sizeof(message)/sizeof(message[0]));
+		hardPort->write(airMode, length);
 		delay(10);
 		while (hardPort->available() > 0) {
 			response += hardPort->read();
@@ -46,13 +41,14 @@ String UbloxGPS::setAirborne() {
 	return response;
 }
 
-unsigned short UbloxGPS::findChecksum(byte buffer[]) {
+void UbloxGPS::addChecksum(byte message[], byte length) {
 	byte ckA=0, ckB=0;
-	for (int i = 0; i<sizeof(buffer)/sizeof(buffer[0]); i++) {
-		ckA = ckA + buffer[i];
+	for (int i = 2; i<length-2; i++) {
+		ckA = ckA + message[i];
 		ckB = ckB + ckA;
 	}
-	return (ckA * 0x100 + ckB);
+	message[length-2] = ckA;
+	message[length-1] = ckB;
 }
 
 void UbloxGPS::update() {

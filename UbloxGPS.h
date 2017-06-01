@@ -34,7 +34,7 @@ class UbloxGPS {
 		int year;
 		unsigned long fixAge;
 		byte sats;
-		unsigned short findChecksum(byte buffer[]);
+		void addChecksum(byte message[], byte length);
 		bool isAvailable();
 };
 
