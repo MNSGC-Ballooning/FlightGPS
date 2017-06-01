@@ -36,6 +36,8 @@ class UbloxGPS {
 		byte sats;
 		void addChecksum(byte message[], byte length);
 		bool isAvailable();
+		char read();
+		void write(byte data[], byte length);
 };
 
 #endif

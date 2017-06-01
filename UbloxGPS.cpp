@@ -24,20 +24,9 @@ String UbloxGPS::setAirborne() {
 	byte length = 44;
 	addChecksum(airMode, length);
 	String response = "";
-	if (usingSoftSerial) {
-		softPort->write(airMode, length);
-		delay(10);
-		while (softPort->available() > 0) {
-			response += softPort->read();
-		}
-	}
-	else {
-		hardPort->write(airMode, length);
-		delay(10);
-		while (hardPort->available() > 0) {
-			response += hardPort->read();
-		}
-	}
+	write(airMode, length);
+	delay(10);
+	while (isAvailable()) {response += read();}
 	return response;
 }
 
@@ -55,9 +44,7 @@ void UbloxGPS::update() {
 	bool newData;
 	char c;
 	while (isAvailable()) {
-		if (usingSoftSerial) c = softPort->read();
-		else c = hardPort->read();
-		if(parser.encode(c)) newData = true;
+		if(parser.encode(read())) newData = true;
 	}
 	if (newData) {
 		parser.f_get_position(&lat, &lon, &fixAge);
@@ -69,6 +56,16 @@ void UbloxGPS::update() {
 bool UbloxGPS::isAvailable() {
 	if (usingSoftSerial) return (softPort->available() > 0);
 	else return (hardPort->available() > 0);
+}
+
+char UbloxGPS::read() {
+	if (usingSoftSerial) return (softPort->read());
+	else return (hardPort->read());
+}
+
+void UbloxGPS::write(byte data[], byte length) {
+	if (usingSoftSerial) softPort->write(data, length);
+	else hardPort->write(data, length);
 }
 
 float UbloxGPS::getLat() {return lat;}
