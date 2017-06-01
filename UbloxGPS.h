@@ -11,7 +11,7 @@ class UbloxGPS {
 		UbloxGPS(HardwareSerial* port);
 		UbloxGPS(SoftwareSerial* port);
 		void initialize();
-		String setAirborne();
+		bool setAirborne();
 		void update();
 		float getLat();
 		float getLon();
