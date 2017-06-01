@@ -1,6 +1,7 @@
 UbloxGPS	KEYWORD1
 initialize	KEYWORD2
 setAirborne	KEYWORD2
+update	KEYWORD2
 getLat	KEYWORD2
 getLon	KEYWORD2
 getAlt	KEYWORD2

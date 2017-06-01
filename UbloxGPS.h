@@ -11,8 +11,8 @@ class UbloxGPS {
 		UbloxGPS(HardwareSerial* port);
 		UbloxGPS(SoftwareSerial* port);
 		void initialize();
-		void setAirborne();
-		void read();
+		String setAirborne();
+		void update();
 		float getLat();
 		float getLon();
 		float getAlt();

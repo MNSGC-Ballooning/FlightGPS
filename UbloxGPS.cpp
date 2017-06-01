@@ -17,19 +17,33 @@ void UbloxGPS::initialize() {
 	setAirborne();
 }
 
-void UbloxGPS::setAirborne() {
+String UbloxGPS::setAirborne() {
 	byte message[] = {0xB5,0x62,0x06,0x24,0x24,0x00,0x00,0x05,0x06,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0,0};
-	byte buffer[36];
-	for (int i = 0; i < 36; i++) {
-		buffer[i] = message[i+5];
+	byte buffer[40];
+	for (int i = 0; i < 40; i++) {
+		buffer[i] = message[i+2];
 	}
 	unsigned short checksum = findChecksum(buffer);
 	message[42] = byte((checksum / 0x100));
 	message[43] = byte((checksum % 0x100));
-	if (usingSoftSerial) softPort->write(message, sizeof(message)/sizeof(message[0]));
-	else hardPort->write(message, sizeof(message)/sizeof(message[0]));
+	String response = "";
+	if (usingSoftSerial) {
+		softPort->write(message, sizeof(message)/sizeof(message[0]));
+		delay(10);
+		while (softPort->available() > 0) {
+			response += softPort->read();
+		}
+	}
+	else {
+		hardPort->write(message, sizeof(message)/sizeof(message[0]));
+		delay(10);
+		while (hardPort->available() > 0) {
+			response += hardPort->read();
+		}
+	}
+	return response;
 }
 
 unsigned short UbloxGPS::findChecksum(byte buffer[]) {
@@ -41,7 +55,7 @@ unsigned short UbloxGPS::findChecksum(byte buffer[]) {
 	return (ckA * 0x100 + ckB);
 }
 
-void UbloxGPS::read() {
+void UbloxGPS::update() {
 	bool newData;
 	char c;
 	while (isAvailable()) {
