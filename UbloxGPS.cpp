@@ -49,15 +49,13 @@ void UbloxGPS::addChecksum(byte message[], byte length) {
 
 void UbloxGPS::update() {
 	bool newData;
-	char c;
 	while (isAvailable()) {
-		c = read();
-		if(parser.encode(c)) newData = true;
-		Serial.print(c);
+		if(parser.encode(read())) newData = true;
 	}
 	if (newData) {
 		parser.f_get_position(&lat, &lon, &fixAge);
 		alt = parser.f_altitude();
+		sats = parser.satellites();
 		parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
 	}
 }
