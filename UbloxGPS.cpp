@@ -1,10 +1,12 @@
 #include "UbloxGPS.h"
 
+//constructor for hardware serial connection
 UbloxGPS::UbloxGPS(HardwareSerial* port) {
 	hardPort = port;
 	usingSoftSerial = false;
 }
 
+//constructor for software serial connection
 #ifdef SoftwareSerial_h
 UbloxGPS::UbloxGPS(SoftwareSerial* port) {
 	softPort = port;
@@ -12,6 +14,7 @@ UbloxGPS::UbloxGPS(SoftwareSerial* port) {
 }
 #endif
 
+//call during setup to begin appropriate serial connection and set to airborne mode
 void UbloxGPS::initialize() {
 #ifdef SoftwareSerial_h
 	if (usingSoftSerial)
@@ -22,6 +25,7 @@ void UbloxGPS::initialize() {
 	setAirborne();
 }
 
+//sends calibration message to force module into airborne mode
 bool UbloxGPS::setAirborne() {
 	byte airMode[] = {0xB5,0x62,0x06,0x24,0x24,0x00,0xFF,0xFF,0x06,0x02,0x00,0x00,0x00,0x00,0x10,0x27,0x00,
 						0x00,0x05,0x00,0xFA,0x00,0xFA,0x00,0x64,0x00,0x2C,0x01,0x00,0x00,0x00,0x00,0x10,
@@ -42,6 +46,7 @@ bool UbloxGPS::setAirborne() {
 	return ack;
 }
 
+//call during loop to read and parse gps data
 void UbloxGPS::update() {
 	bool newData;
 	while (isAvailable()) {
@@ -55,6 +60,7 @@ void UbloxGPS::update() {
 	}
 }
 
+//checks appropriate serial connection for available data
 bool UbloxGPS::isAvailable() {
 #ifdef SoftwareSerial_h
 	if (usingSoftSerial)
@@ -64,6 +70,7 @@ bool UbloxGPS::isAvailable() {
 		return (hardPort->available() > 0);
 }
 
+//calls read() function of appropriate serial connection
 char UbloxGPS::read() {
 #ifdef SoftwareSerial_h
 	if (usingSoftSerial)
@@ -73,6 +80,7 @@ char UbloxGPS::read() {
 		return (hardPort->read());
 }
 
+//calls write() function of appropriate serial connection
 void UbloxGPS::write(byte data[], byte length) {
 #ifdef SoftwareSerial_h
 	if (usingSoftSerial)
@@ -82,6 +90,7 @@ void UbloxGPS::write(byte data[], byte length) {
 		hardPort->write(data, length);
 }
 
+//functions for retrieving gps data for program use
 float UbloxGPS::getLat() {return lat;}
 float UbloxGPS::getLon() {return lon;}
 float UbloxGPS::getAlt() {return alt;}
