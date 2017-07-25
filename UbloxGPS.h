@@ -2,14 +2,18 @@
 #define UbloxGPS_h
 
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 #include <TinyGPS.h>
+
+//Comment this out if inclusion causes errors, or using hard serial and want to save memory
+#include <SoftwareSerial.h>
 
 
 class UbloxGPS {
 	public:
 		UbloxGPS(HardwareSerial* port);
+#ifdef SoftwareSerial_h
 		UbloxGPS(SoftwareSerial* port);
+#endif
 		void initialize();
 		bool setAirborne();
 		void update();
@@ -27,7 +31,9 @@ class UbloxGPS {
 	private:
 		TinyGPS parser;
 		HardwareSerial* hardPort;
+#ifdef SoftwareSerial_h
 		SoftwareSerial* softPort;
+#endif
 		bool usingSoftSerial;
 		float lat, lon, alt;
 		byte day, month, hour, minute, second, hundreths;

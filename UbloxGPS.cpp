@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "UbloxGPS.h"
 
 UbloxGPS::UbloxGPS(HardwareSerial* port) {
@@ -6,14 +5,20 @@ UbloxGPS::UbloxGPS(HardwareSerial* port) {
 	usingSoftSerial = false;
 }
 
+#ifdef SoftwareSerial_h
 UbloxGPS::UbloxGPS(SoftwareSerial* port) {
 	softPort = port;
 	usingSoftSerial = true;
 }
+#endif
 
 void UbloxGPS::initialize() {
-	if (usingSoftSerial) softPort->begin(9600);
-	else hardPort->begin(9600);
+#ifdef SoftwareSerial_h
+	if (usingSoftSerial)
+		softPort->begin(9600);
+	else
+#endif
+		hardPort->begin(9600);
 	setAirborne();
 }
 
@@ -37,16 +42,6 @@ bool UbloxGPS::setAirborne() {
 	return ack;
 }
 
-void UbloxGPS::addChecksum(byte message[], byte length) {
-	byte ckA=0, ckB=0;
-	for (int i = 2; i<length-2; i++) {
-		ckA = ckA + message[i];
-		ckB = ckB + ckA;
-	}
-	message[length-2] = ckA;
-	message[length-1] = ckB;
-}
-
 void UbloxGPS::update() {
 	bool newData;
 	while (isAvailable()) {
@@ -61,18 +56,30 @@ void UbloxGPS::update() {
 }
 
 bool UbloxGPS::isAvailable() {
-	if (usingSoftSerial) return (softPort->available() > 0);
-	else return (hardPort->available() > 0);
+#ifdef SoftwareSerial_h
+	if (usingSoftSerial)
+		return (softPort->available() > 0);
+	else
+#endif
+		return (hardPort->available() > 0);
 }
 
 char UbloxGPS::read() {
-	if (usingSoftSerial) return (softPort->read());
-	else return (hardPort->read());
+#ifdef SoftwareSerial_h
+	if (usingSoftSerial)
+		return (softPort->read());
+	else
+#endif
+		return (hardPort->read());
 }
 
 void UbloxGPS::write(byte data[], byte length) {
-	if (usingSoftSerial) softPort->write(data, length);
-	else hardPort->write(data, length);
+#ifdef SoftwareSerial_h
+	if (usingSoftSerial)
+		softPort->write(data, length);
+	else
+#endif
+		hardPort->write(data, length);
 }
 
 float UbloxGPS::getLat() {return lat;}
