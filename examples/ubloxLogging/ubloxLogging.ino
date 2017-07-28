@@ -11,7 +11,7 @@
 SoftwareSerial ss = SoftwareSerial(2,3);
 //Pass a reference to this serial line to the GPS constructor
 UbloxGPS gps = UbloxGPS(&ss);
-//Alternately, use a hard serial line if the microcontroler supports it
+//Alternately, use a hard serial line if the microcontroller supports it
 //UbloxGPS gps = UbloxGPS(&Serial1);
 
 //global variable for datalogging
