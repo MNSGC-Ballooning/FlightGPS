@@ -1,27 +1,16 @@
 #include "UbloxGPS.h"
 
 //constructor for hardware serial connection
-UbloxGPS::UbloxGPS(HardwareSerial* port) {
-	hardPort = port;
-	usingSoftSerial = false;
-}
+UbloxGPS::UbloxGPS(HardwareSerial* port):FlightGPS(port) {}
 
 //constructor for software serial connection
 #ifdef SoftwareSerial_h
-UbloxGPS::UbloxGPS(SoftwareSerial* port) {
-	softPort = port;
-	usingSoftSerial = true;
-}
+UbloxGPS::UbloxGPS(SoftwareSerial* port):FlightGPS(port) {}
 #endif
 
 //call during setup to begin appropriate serial connection and set to airborne mode
 void UbloxGPS::initialize() {
-#ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		softPort->begin(9600);
-	else
-#endif
-		hardPort->begin(9600);
+	super::initialize();
 	setAirborne();
 }
 
@@ -45,60 +34,3 @@ bool UbloxGPS::setAirborne() {
 	}
 	return ack;
 }
-
-//call during loop to read and parse gps data
-void UbloxGPS::update() {
-	bool newData;
-	while (isAvailable()) {
-		if(parser.encode(read())) newData = true;
-	}
-	if (newData) {
-		parser.f_get_position(&lat, &lon, &fixAge);
-		alt = parser.f_altitude();
-		sats = parser.satellites();
-		parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
-	}
-}
-
-//checks appropriate serial connection for available data
-bool UbloxGPS::isAvailable() {
-#ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		return (softPort->available() > 0);
-	else
-#endif
-		return (hardPort->available() > 0);
-}
-
-//calls read() function of appropriate serial connection
-char UbloxGPS::read() {
-#ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		return (softPort->read());
-	else
-#endif
-		return (hardPort->read());
-}
-
-//calls write() function of appropriate serial connection
-void UbloxGPS::write(byte data[], byte length) {
-#ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		softPort->write(data, length);
-	else
-#endif
-		hardPort->write(data, length);
-}
-
-//functions for retrieving gps data for program use
-float UbloxGPS::getLat() {return lat;}
-float UbloxGPS::getLon() {return lon;}
-float UbloxGPS::getAlt() {return alt;}
-byte UbloxGPS::getHour() {return hour;}
-byte UbloxGPS::getMinute() {return minute;}
-byte UbloxGPS::getSecond() {return second;}
-byte UbloxGPS::getDay() {return day;}
-byte UbloxGPS::getMonth() {return month;}
-byte UbloxGPS::getYear() {return year;}
-byte UbloxGPS::getSats() {return sats;}
-unsigned long UbloxGPS::getFixAge() {return fixAge;}

@@ -1,3 +1,4 @@
+FlightGPS	KEYWORD1
 UbloxGPS	KEYWORD1
 initialize	KEYWORD2
 setAirborne	KEYWORD2

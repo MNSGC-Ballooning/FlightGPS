@@ -1,7 +1,7 @@
-# UbloxGPS
+# FlightGPS
 
-A library for Ublox gps modules intended for high-altitude balloon use.
-Supports reading and processing of NMEA data, and calibration of device to airborne mode.
+A library for various gps modules intended for high-altitude balloon use.
+Supports reading and processing of NMEA data on all modules. Uses subclasses to implement module-specific functions (currently only calibration for airborne mode on Ublox devices).
 
 ## Library Dependencies
 
@@ -12,5 +12,5 @@ This library depends on the following additional Arduino libraries:
 
 This library is designed to support both hard and software serial connections to gps modules. By default,
 this library automatically #includes the SoftwareSerial.h library. If building for a board that doesn't
-support SoftwareSerial, simply //comment out the #include statement on line 8 of [UbloxGPS.h](src/UbloxGPS.h).
+support SoftwareSerial, simply //comment out the #include statement on line 8 of [FlightGPS.h](src/FlightGPS.h).
 This can also be done to save memory if no SoftwareSerial connections are used.
