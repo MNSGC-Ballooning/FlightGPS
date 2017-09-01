@@ -1,15 +1,15 @@
 #include "FlightGPS.h"
 
 //constructor for hardware serial connection
-FlightGPS::FlightGPS(HardwareSerial* port) {
-	hardPort = port;
+FlightGPS::FlightGPS(HardwareSerial* port):
+	hardPort(port) {
 	usingSoftSerial = false;
 }
 
 //constructor for software serial connection
 #ifdef SoftwareSerial_h
-FlightGPS::FlightGPS(SoftwareSerial* port) {
-	softPort = port;
+FlightGPS::FlightGPS(SoftwareSerial* port):
+	softPort(port) {
 	usingSoftSerial = true;
 }
 #endif
