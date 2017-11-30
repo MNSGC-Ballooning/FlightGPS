@@ -34,9 +34,9 @@ void loop() {
   //once per second, print results to serial monitor
   if(millis() - timer > 1000) {
     timer = millis();
+    Serial.print("Date: " + String(gps.getMonth()) + "/" + String(gps.getDay()) + "/" + String(gps.getYear()));
+    Serial.print("  Time: " + String(gps.getHour()) + ":" + String(gps.getMinute()) + ":" + String(gps.getSecond()));
+    Serial.print("  Position: " + String(gps.getLat()) + ", " + String(gps.getLon()) + ", " + String(gps.getAlt()));
+    Serial.println("  Sats: " + String(gps.getSats()));
   }
-  Serial.print("Date: " + String(gps.getMonth()) + "/" + String(gps.getDay()) + "/" + String(gps.getYear()));
-  Serial.print("  Time: " + String(gps.getHour()) + ":" + String(gps.getMinute()) + ":" + String(gps.getSecond()));
-  Serial.print("  Position: " + String(gps.getLat()) + ", " + String(gps.getLon()) + ", " + String(gps.getAlt()));
-  Serial.println("  Sats: " + String(gps.getSats()));
 }
