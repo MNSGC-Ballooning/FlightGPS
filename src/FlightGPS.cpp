@@ -22,6 +22,7 @@ void FlightGPS::initialize() {
 	else
 #endif
 		hardPort->begin(9600);
+	update();
 }
 
 //call during loop to read and parse gps data
