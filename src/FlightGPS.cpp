@@ -2,71 +2,71 @@
 
 //constructor for hardware serial connection
 FlightGPS::FlightGPS(HardwareSerial* port):
-	hardPort(port) {
-	usingSoftSerial = false;
+  hardPort(port) {
+  usingSoftSerial = false;
 }
 
 //constructor for software serial connection
 #ifdef SoftwareSerial_h
 FlightGPS::FlightGPS(SoftwareSerial* port):
-	softPort(port) {
-	usingSoftSerial = true;
+  softPort(port) {
+  usingSoftSerial = true;
 }
 #endif
 
 //call during setup to begin appropriate serial connection
 void FlightGPS::initialize() {
 #ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		softPort->begin(9600);
-	else
+  if (usingSoftSerial)
+    softPort->begin(9600);
+  else
 #endif
-		hardPort->begin(9600);
-	update();
+    hardPort->begin(9600);
+  update();
 }
 
 //call during loop to read and parse gps data
 void FlightGPS::update() {
-	bool newData;
-	while (isAvailable()) {
-		if(parser.encode(read())) newData = true;
-	}
-	if (newData) {
-		parser.f_get_position(&lat, &lon, &fixAge);
-		alt = parser.f_altitude();
-		sats = parser.satellites();
-		parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
-	}
+  bool newData;
+  while (isAvailable()) {
+    if(parser.encode(read())) newData = true;
+  }
+  if (newData) {
+    parser.f_get_position(&lat, &lon, &fixAge);
+    alt = parser.f_altitude();
+    sats = parser.satellites();
+    parser.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundreths, &fixAge);
+  }
 }
 
 //checks appropriate serial connection for available data
 bool FlightGPS::isAvailable() {
 #ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		return (softPort->available() > 0);
-	else
+  if (usingSoftSerial)
+    return (softPort->available() > 0);
+  else
 #endif
-		return (hardPort->available() > 0);
+    return (hardPort->available() > 0);
 }
 
 //calls read() function of appropriate serial connection
 char FlightGPS::read() {
 #ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		return (softPort->read());
-	else
+  if (usingSoftSerial)
+    return (softPort->read());
+  else
 #endif
-		return (hardPort->read());
+    return (hardPort->read());
 }
 
 //calls write() function of appropriate serial connection
 void FlightGPS::write(byte data[], byte length) {
 #ifdef SoftwareSerial_h
-	if (usingSoftSerial)
-		softPort->write(data, length);
-	else
+  if (usingSoftSerial)
+    softPort->write(data, length);
+  else
 #endif
-		hardPort->write(data, length);
+    hardPort->write(data, length);
 }
 
 //functions for retrieving gps data for program use

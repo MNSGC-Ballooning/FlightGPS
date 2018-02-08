@@ -8,41 +8,41 @@
 #include <SoftwareSerial.h>
 
 class FlightGPS {
-	public:
-		FlightGPS(HardwareSerial* port);
+  public:
+    FlightGPS(HardwareSerial* port);
 #ifdef SoftwareSerial_h
-		FlightGPS(SoftwareSerial* port);
+    FlightGPS(SoftwareSerial* port);
 #endif
-		virtual ~FlightGPS(){}
-		virtual void initialize();
-		void update();
-		float getLat();
-		float getLon();
-		float getAlt();
-		byte getHour();
-		byte getMinute();
-		byte getSecond();
-		byte getDay();
-		byte getMonth();
-		byte getYear();
-		byte getSats();
-		unsigned long getFixAge();
-	protected:
-		bool isAvailable();
-		char read();
-		void write(byte data[], byte length);
-	private:
-		TinyGPS parser;
-		HardwareSerial* hardPort;
+    virtual ~FlightGPS(){}
+    virtual void initialize();
+    void update();
+    float getLat();
+    float getLon();
+    float getAlt();
+    byte getHour();
+    byte getMinute();
+    byte getSecond();
+    byte getDay();
+    byte getMonth();
+    byte getYear();
+    byte getSats();
+    unsigned long getFixAge();
+  protected:
+    bool isAvailable();
+    char read();
+    void write(byte data[], byte length);
+  private:
+    TinyGPS parser;
+    HardwareSerial* hardPort;
 #ifdef SoftwareSerial_h
-		SoftwareSerial* softPort;
+    SoftwareSerial* softPort;
 #endif
-		bool usingSoftSerial;
-		float lat, lon, alt;
-		byte day, month, hour, minute, second, hundreths;
-		int year;
-		unsigned long fixAge;
-		byte sats;
+    bool usingSoftSerial;
+    float lat, lon, alt;
+    byte day, month, hour, minute, second, hundreths;
+    int year;
+    unsigned long fixAge;
+    byte sats;
 };
 
 #endif

@@ -5,15 +5,15 @@
 
 
 class UbloxGPS: public FlightGPS {
-	public:
-		UbloxGPS(HardwareSerial* port);
+  public:
+    UbloxGPS(HardwareSerial* port);
 #ifdef SoftwareSerial_h
-		UbloxGPS(SoftwareSerial* port);
+    UbloxGPS(SoftwareSerial* port);
 #endif
-		void initialize();
-		bool setAirborne();
-	private:
-		typedef FlightGPS super;
+    void initialize();
+    bool setAirborne();
+  private:
+    typedef FlightGPS super;
 };
 
 #endif
