@@ -3,7 +3,6 @@
 
 #include "FlightGPS.h"
 
-
 class UbloxGPS: public FlightGPS {
   public:
     UbloxGPS(HardwareSerial* port);
