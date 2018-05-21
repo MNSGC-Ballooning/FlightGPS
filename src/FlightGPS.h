@@ -28,16 +28,16 @@ class FlightGPS {
     byte getSats();
     unsigned long getFixAge();
   protected:
+    bool usingSoftSerial;
+    HardwareSerial* hardPort;
+#ifdef SoftwareSerial_h
+    SoftwareSerial* softPort;
+#endif
     bool isAvailable();
     char read();
     void write(byte data[], byte length);
   private:
     TinyGPS parser;
-    HardwareSerial* hardPort;
-#ifdef SoftwareSerial_h
-    SoftwareSerial* softPort;
-#endif
-    bool usingSoftSerial;
     float lat, lon, alt;
     byte day, month, hour, minute, second, hundreths;
     int year;

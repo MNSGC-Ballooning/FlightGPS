@@ -1,5 +1,6 @@
 FlightGPS	KEYWORD1
 UbloxGPS	KEYWORD1
+CopernicusGPS	KEYWORD1
 initialize	KEYWORD2
 setAirborne	KEYWORD2
 update	KEYWORD2

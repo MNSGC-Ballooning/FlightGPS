@@ -10,11 +10,11 @@ CopernicusGPS::CopernicusGPS(SoftwareSerial* port):FlightGPS(port) {}
 
 //call during setup to begin appropriate serial connection
 void CopernicusGPS::initialize() {
-#ifdef SoftwareSerial_h
-  if (usingSoftSerial)
-    softPort->begin(4800);
-  else
-#endif
-    hardPort->begin(4800);
-  update();
+  #ifdef SoftwareSerial_h
+    if (usingSoftSerial)
+      softPort->begin(4800);
+    else
+  #endif
+      hardPort->begin(4800);
+    update();
 }
