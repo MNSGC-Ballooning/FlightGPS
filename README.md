@@ -7,10 +7,3 @@ Supports reading and processing of NMEA data on all modules. Uses subclasses to 
 
 This library depends on the following additional Arduino libraries:
 * [TinyGPS](https://github.com/mikalhart/TinyGPS)
-
-## Serial Connection Notes
-
-This library is designed to support both hard and software serial connections to gps modules. By default,
-this library automatically #includes the SoftwareSerial.h library. If building for a board that doesn't
-support SoftwareSerial, simply //comment out the #include statement on line 8 of [FlightGPS.h](src/FlightGPS.h).
-This can also be done to save memory if no SoftwareSerial connections are used.

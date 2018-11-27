@@ -1,9 +1,9 @@
 FlightGPS	KEYWORD1
 UbloxGPS	KEYWORD1
 CopernicusGPS	KEYWORD1
-initialize	KEYWORD2
-setAirborne	KEYWORD2
+init	KEYWORD2
 update	KEYWORD2
+setAirborne	KEYWORD2
 getLat	KEYWORD2
 getLon	KEYWORD2
 getAlt	KEYWORD2

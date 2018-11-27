@@ -2,6 +2,7 @@
  */
 
 #include <UbloxGPS.h>
+#include <SoftwareSerial.h>
 
 //GPS object needs a serial line to read
 SoftwareSerial ss = SoftwareSerial(2,3);
@@ -18,7 +19,7 @@ void setup() {
   Serial.begin(9600);
   
   //Begins gps communication. Also attempts to set airborne mode once by default, but doesn't indicate success
-  gps.initialize();
+  gps.init();
 
   //Attempt to set to airborne mode, and report results to serial monitor
   if(gps.setAirborne())

@@ -3,13 +3,9 @@
 
 #include "FlightGPS.h"
 
-class CopernicusGPS: public FlightGPS {
+class CopernicusGPS : public FlightGPS {
   public:
-    CopernicusGPS(HardwareSerial* port);
-#ifdef SoftwareSerial_h
-    CopernicusGPS(SoftwareSerial* port);
-#endif
-    void initialize();
+    CopernicusGPS(Stream* port);
 };
 
 #endif

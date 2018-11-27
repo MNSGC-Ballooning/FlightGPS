@@ -1,16 +1,12 @@
 #include "UbloxGPS.h"
 
-//constructor for hardware serial connection
-UbloxGPS::UbloxGPS(HardwareSerial* port):FlightGPS(port) {}
+//constructor
+UbloxGPS::UbloxGPS(Stream* port):
+  FlightGPS(port) {}
 
-//constructor for software serial connection
-#ifdef SoftwareSerial_h
-UbloxGPS::UbloxGPS(SoftwareSerial* port):FlightGPS(port) {}
-#endif
-
-//call during setup to begin appropriate serial connection and set to airborne mode
-void UbloxGPS::initialize() {
-  super::initialize();
+//call during setup to get initial gps values and set to airborne mode
+void UbloxGPS::init() {
+  super::init();
   setAirborne();
 }
 

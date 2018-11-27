@@ -4,17 +4,23 @@
 #include <Arduino.h>
 #include <TinyGPS.h>
 
-//Comment this out if inclusion causes errors, or using hard serial and want to save memory
-#include <SoftwareSerial.h>
-
-class FlightGPS {
+class FlightGPS : public Stream {
   public:
-    FlightGPS(HardwareSerial* port);
-#ifdef SoftwareSerial_h
-    FlightGPS(SoftwareSerial* port);
-#endif
+    //Constructor and Destructor
+    FlightGPS(Stream* port);
     virtual ~FlightGPS(){}
-    virtual void initialize();
+    //Virtual Stream functions
+    int available() {return port->available();}
+    int peek() {return port->peek();}
+    int read() {return port->read();}
+    //Virtual Print functions
+    int availableForWrite() {return port->availableForWrite();}
+    void flush() {port->flush();}
+    size_t write(uint8_t b) {return port->write(b);}
+    size_t write(const uint8_t *buffer, size_t size) {return port->write(buffer, size);}
+    //setup function
+    virtual void init();
+    //data polling functions
     void update();
     float getLat();
     float getLon();
@@ -27,16 +33,8 @@ class FlightGPS {
     byte getYear();
     byte getSats();
     unsigned long getFixAge();
-  protected:
-    bool usingSoftSerial;
-    HardwareSerial* hardPort;
-#ifdef SoftwareSerial_h
-    SoftwareSerial* softPort;
-#endif
-    bool isAvailable();
-    char read();
-    void write(byte data[], byte length);
   private:
+    Stream* port;
     TinyGPS parser;
     float lat, lon, alt;
     byte day, month, hour, minute, second, hundreths;

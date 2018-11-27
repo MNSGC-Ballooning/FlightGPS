@@ -4,6 +4,7 @@
 
 #include <SD.h>
 #include <UbloxGPS.h>
+#include <SoftwareSerial.h>
 
 #define chipSelect 10 //Switch to appropriate pin for breakout/shield used
 
@@ -33,7 +34,7 @@ void setup() {
   }
   
   //Begins gps communication. Also attempts to set to airborne mode once by default, but doesn't indicate success
-  gps.initialize();
+  gps.init();
 
   //Attempt to set to airborne 3 times. If successful, records result and breaks loop. If unsuccessful, saves warning and moves on
   byte i = 0;
@@ -79,4 +80,3 @@ void loop() {
   //slows down program slightly to prevent unnecessary repeated calls to update(). Remove if running additional code.
   delay(10);
 }
-

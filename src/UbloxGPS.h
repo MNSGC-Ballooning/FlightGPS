@@ -3,13 +3,10 @@
 
 #include "FlightGPS.h"
 
-class UbloxGPS: public FlightGPS {
+class UbloxGPS : public FlightGPS {
   public:
-    UbloxGPS(HardwareSerial* port);
-#ifdef SoftwareSerial_h
-    UbloxGPS(SoftwareSerial* port);
-#endif
-    void initialize();
+    UbloxGPS(Stream* port);
+    void init();
     bool setAirborne();
   private:
     typedef FlightGPS super;
