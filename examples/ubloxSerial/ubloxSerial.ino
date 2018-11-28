@@ -16,9 +16,13 @@ unsigned long timer = 0;
 
 void setup() {
   //Begins serial monitor communication
-  Serial.begin(9600);
+  Serial.begin(115200);
+
+  //GPS serial connection needs to be started manually
+  ss.begin(UBLOX_BAUD); //If using SoftwareSerial
+  //Serial1.begin(UBLOX_BAUD); //If using Serial1
   
-  //Begins gps communication. Also attempts to set airborne mode once by default, but doesn't indicate success
+  //Start tracking gps and attempt to set airborne mode (no indication of success)
   gps.init();
 
   //Attempt to set to airborne mode, and report results to serial monitor

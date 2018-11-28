@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include <TinyGPS.h>
 
+#define ADAFRUIT_BAUD 9600
+#define COPERNICUS_BAUD 4800
+
 class FlightGPS : public Stream {
   public:
     //Constructor and Destructor

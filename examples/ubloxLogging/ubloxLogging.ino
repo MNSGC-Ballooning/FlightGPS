@@ -4,16 +4,15 @@
 
 #include <SD.h>
 #include <UbloxGPS.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h> //If needed
 
 #define chipSelect 10 //Switch to appropriate pin for breakout/shield used
 
-//GPS object needs a serial line to read
-SoftwareSerial ss = SoftwareSerial(2,3);
-//Pass a reference to this serial line to the GPS constructor
-UbloxGPS gps = UbloxGPS(&ss);
-//Alternately, use a hard serial line if the microcontroller supports it
-//UbloxGPS gps = UbloxGPS(&Serial1);
+//Pass a reference to a Serial connection to the GPS constructor
+UbloxGPS gps = UbloxGPS(&Serial1);
+//If no hardware ports are available, use SoftwareSerial instead
+//SoftwareSerial ss = SoftwareSerial(2,3);
+//UbloxGPS gps = UbloxGPS(&ss);
 
 //global variable for datalogging
 char filename[] = "Ublox00.csv";
@@ -32,8 +31,12 @@ void setup() {
       }
     }
   }
+
+  //GPS serial connection needs to be started manually
+  Serial1.begin(UBLOX_BAUD); //If using Serial1
+  //ss.begin(UBLOX_BAUD); //If using SoftwareSerial
   
-  //Begins gps communication. Also attempts to set to airborne mode once by default, but doesn't indicate success
+  //Start tracking gps and attempt to set airborne mode (no indication of success)
   gps.init();
 
   //Attempt to set to airborne 3 times. If successful, records result and breaks loop. If unsuccessful, saves warning and moves on
