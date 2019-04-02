@@ -10,8 +10,6 @@ class UbloxGPS : public FlightGPS {
     UbloxGPS(Stream* port);
     void init();
     bool setAirborne();
-  private:
-    typedef FlightGPS super;
 };
 
 #endif

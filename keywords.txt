@@ -6,7 +6,8 @@ update	KEYWORD2
 setAirborne	KEYWORD2
 getLat	KEYWORD2
 getLon	KEYWORD2
-getAlt	KEYWORD2
+getAlt_meters	KEYWORD2
+getAlt_feet	KEYWORD2
 getHour	KEYWORD2
 getMinute	KEYWORD2
 getSecond	KEYWORD2

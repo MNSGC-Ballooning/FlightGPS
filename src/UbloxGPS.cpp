@@ -6,7 +6,7 @@ UbloxGPS::UbloxGPS(Stream* port):
 
 //call during setup to get initial gps values and set to airborne mode
 void UbloxGPS::init() {
-  super::init();
+  FlightGPS::init();
   setAirborne();
 }
 

@@ -2,7 +2,7 @@
 #define FlightGPS_h
 
 #include <Arduino.h>
-#include <TinyGPS.h>
+#include <TinyGPS++.h>
 
 #define ADAFRUIT_BAUD 9600
 #define COPERNICUS_BAUD 4800
@@ -25,25 +25,21 @@ class FlightGPS : public Stream {
     virtual void init();
     //data polling functions
     void update();
-    float getLat();
-    float getLon();
-    float getAlt();
+    double getLat();
+    double getLon();
+    double getAlt_meters();
+    double getAlt_feet();
     byte getHour();
     byte getMinute();
     byte getSecond();
     byte getDay();
     byte getMonth();
-    byte getYear();
+    unsigned int getYear();
     byte getSats();
     unsigned long getFixAge();
   private:
     Stream* port;
-    TinyGPS parser;
-    float lat, lon, alt;
-    byte day, month, hour, minute, second, hundreths;
-    int year;
-    unsigned long fixAge;
-    byte sats;
+    TinyGPSPlus parser;
 };
 
 #endif
