@@ -30,3 +30,6 @@ byte FlightGPS::getMonth() {return parser.date.month();}
 unsigned int FlightGPS::getYear() {return parser.date.year();}
 byte FlightGPS::getSats() {return parser.satellites.value();}
 unsigned long FlightGPS::getFixAge() {return parser.altitude.age();}
+
+//access to TinyGPSPlus parser if needed
+TinyGPSPlus* FlightGPS::getParser() {return &parser;}

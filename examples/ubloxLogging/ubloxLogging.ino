@@ -69,7 +69,7 @@ void loop() {
     //All data is returned as numbers (int or float as appropriate), so values must be converted to strings before logging
     String data = String(gps.getMonth()) + "/" + String(gps.getDay()) + "/" + String(gps.getYear()) + ","
                   + String(gps.getHour()) + ":" + String(gps.getMinute()) + ":" + String(gps.getSecond()) + ","
-                  + String(gps.getLat(), 4) + "," + String(gps.getLon(), 4) + "," + String(gps.getAlt(), 1) + ","
+                  + String(gps.getLat(), 4) + "," + String(gps.getLon(), 4) + "," + String(gps.getAlt_meters(), 1) + ","
                   + String(gps.getSats()) + ",";
     //GPS should update once per second, if data is more than 2 seconds old, fix was likely lost
     if(gps.getFixAge() > 2000)

@@ -41,7 +41,7 @@ void loop() {
     timer = millis();
     Serial.print("Date: " + String(gps.getMonth()) + "/" + String(gps.getDay()) + "/" + String(gps.getYear()));
     Serial.print("  Time: " + String(gps.getHour()) + ":" + String(gps.getMinute()) + ":" + String(gps.getSecond()));
-    Serial.print("  Position: " + String(gps.getLat()) + ", " + String(gps.getLon()) + ", " + String(gps.getAlt()));
+    Serial.print("  Position: " + String(gps.getLat()) + ", " + String(gps.getLon()) + ", " + String(gps.getAlt_meters()));
     Serial.println("  Sats: " + String(gps.getSats()));
   }
 }

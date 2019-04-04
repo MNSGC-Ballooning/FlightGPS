@@ -23,8 +23,9 @@ class FlightGPS : public Stream {
     size_t write(const uint8_t *buffer, size_t size) {return port->write(buffer, size);}
     //setup function
     virtual void init();
-    //data polling functions
+    //loop function
     void update();
+    //data polling functions
     double getLat();
     double getLon();
     double getAlt_meters();
@@ -37,6 +38,9 @@ class FlightGPS : public Stream {
     unsigned int getYear();
     byte getSats();
     unsigned long getFixAge();
+    //ADVANCED USERS ONLY--get a pointer to the actual TinyGPSPlus parser if additional data fields are needed
+    //Only use for query, stick to FlightGPS.update() to feed the data stream to the parser
+    TinyGPSPlus* getParser();
   private:
     Stream* port;
     TinyGPSPlus parser;
