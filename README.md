@@ -6,4 +6,4 @@ Supports reading and processing of NMEA data on all modules. Uses subclasses to 
 ## Library Dependencies
 
 This library depends on the following additional Arduino libraries:
-* [TinyGPS](https://github.com/mikalhart/TinyGPS)
+* [TinyGPSPlus](https://github.com/mikalhart/TinyGPSPlus)
